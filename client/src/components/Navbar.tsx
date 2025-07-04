@@ -27,10 +27,7 @@ interface NavbarProps {
     cartCount: number;
     onCartClick: () => void;
 }
-
-const navLinks = [
-    { label: 'Home', icon: <HomeIcon />, to: '/' },
-];
+ 
 
 const Navbar: React.FC<NavbarProps> = ({ themeName, setTheme, cartCount, onCartClick }) => {
     const [drawerOpen, setDrawerOpen] = useState(false);

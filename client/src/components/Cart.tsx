@@ -9,9 +9,7 @@ import {
   List,
   ListItem,
   ListItemAvatar,
-  Avatar,
-  ListItemText,
-  ListItemSecondaryAction,
+  Avatar, 
   Stack,
   useTheme,
 } from '@mui/material';
@@ -20,19 +18,23 @@ import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 
+// Update CartItem type in Cart.tsx to use _id as string
 export interface CartItem {
-  id: number;
+  _id: string;
   name: string;
   price: number;
   image: string;
   description: string;
+  category: string;
+  rating: number;
+  inStock: boolean;
   quantity: number;
 }
 
 interface CartProps {
   cartItems: CartItem[];
-  onRemove?: (id: number) => void;
-  onQuantityChange?: (id: number, newQty: number) => void;
+  onRemove?: (id: string) => void;
+  onQuantityChange?: (id: string, newQty: number) => void;
   onCheckoutClick?: () => void;
 }
 
@@ -67,7 +69,7 @@ const Cart: React.FC<CartProps> = ({ cartItems, onRemove, onQuantityChange, onCh
           <List disablePadding>
             {cartItems.map((item) => (
               <ListItem
-                key={item.id}
+                key={item._id}
                 alignItems="flex-start"
                 sx={{
                   mb: 2,
@@ -82,7 +84,7 @@ const Cart: React.FC<CartProps> = ({ cartItems, onRemove, onQuantityChange, onCh
                   alignItems: 'center',
                 }}
                 secondaryAction={onRemove && (
-                  <IconButton edge="end" aria-label="remove from cart" color="error" onClick={() => onRemove(item.id)}>
+                  <IconButton edge="end" aria-label="remove from cart" color="error" onClick={() => onRemove(item._id)}>
                     <DeleteIcon />
                   </IconButton>
                 )}
@@ -110,7 +112,7 @@ const Cart: React.FC<CartProps> = ({ cartItems, onRemove, onQuantityChange, onCh
                       <IconButton
                         size="small"
                         aria-label="decrease quantity"
-                        onClick={() => onQuantityChange(item.id, Math.max(1, item.quantity - 1))}
+                        onClick={() => onQuantityChange(item._id, Math.max(1, item.quantity - 1))}
                         disabled={item.quantity <= 1}
                         sx={{ border: '1px solid', borderColor: 'divider', bgcolor: 'background.paper', mr: 1 }}
                       >
@@ -122,7 +124,7 @@ const Cart: React.FC<CartProps> = ({ cartItems, onRemove, onQuantityChange, onCh
                       <IconButton
                         size="small"
                         aria-label="increase quantity"
-                        onClick={() => onQuantityChange(item.id, item.quantity + 1)}
+                        onClick={() => onQuantityChange(item._id, item.quantity + 1)}
                         sx={{ border: '1px solid', borderColor: 'divider', bgcolor: 'background.paper', ml: 1 }}
                       >
                         <AddIcon fontSize="small" />
