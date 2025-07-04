@@ -65,53 +65,70 @@ const Cart: React.FC<CartProps> = ({ cartItems, onRemove, onQuantityChange }) =>
         ) : (
           <List disablePadding>
             {cartItems.map((item) => (
-              <ListItem key={item.id} alignItems="flex-start" sx={{ mb: 2, borderRadius: 2, bgcolor: theme.palette.action.hover }}>
-                <ListItemAvatar>
-                  <Avatar src={item.image} alt={item.name} variant="rounded" sx={{ width: 56, height: 56 }} />
-                </ListItemAvatar>
-                <ListItemText
-                  primary={
-                    <Typography variant="subtitle1" fontWeight={600}>
-                      {item.name}
-                    </Typography>
-                  }
-                  secondary={
-                    <>
-                      <Typography variant="body2" color="text.secondary">
-                        ${item.price.toFixed(2)} x {item.quantity} = ${(item.price * item.quantity).toFixed(2)}
-                      </Typography>
-                      {onQuantityChange && (
-                        <Box sx={{ display: 'flex', alignItems: 'center', mt: 1 }}>
-                          <IconButton
-                            size="small"
-                            aria-label="decrease quantity"
-                            onClick={() => onQuantityChange(item.id, Math.max(1, item.quantity - 1))}
-                            disabled={item.quantity <= 1}
-                          >
-                            <RemoveIcon fontSize="small" />
-                          </IconButton>
-                          <Typography variant="body2" sx={{ mx: 1, minWidth: 24, textAlign: 'center' }}>
-                            {item.quantity}
-                          </Typography>
-                          <IconButton
-                            size="small"
-                            aria-label="increase quantity"
-                            onClick={() => onQuantityChange(item.id, item.quantity + 1)}
-                          >
-                            <AddIcon fontSize="small" />
-                          </IconButton>
-                        </Box>
-                      )}
-                    </>
-                  }
-                />
-                {onRemove && (
-                  <ListItemSecondaryAction>
-                    <IconButton edge="end" aria-label="remove from cart" color="error" onClick={() => onRemove(item.id)}>
-                      <DeleteIcon />
-                    </IconButton>
-                  </ListItemSecondaryAction>
+              <ListItem
+                key={item.id}
+                alignItems="flex-start"
+                sx={{
+                  mb: 2,
+                  borderRadius: 3,
+                  bgcolor: theme.palette.background.paper,
+                  boxShadow: 2,
+                  p: 1.5,
+                  transition: 'box-shadow 0.2s',
+                  ':hover': { boxShadow: 6, bgcolor: theme.palette.action.hover },
+                  display: 'flex',
+                  gap: 2,
+                  alignItems: 'center',
+                }}
+                secondaryAction={onRemove && (
+                  <IconButton edge="end" aria-label="remove from cart" color="error" onClick={() => onRemove(item.id)}>
+                    <DeleteIcon />
+                  </IconButton>
                 )}
+              >
+                <ListItemAvatar>
+                  <Avatar
+                    src={item.image}
+                    alt={item.name}
+                    variant="rounded"
+                    sx={{ width: 64, height: 64, mr: 2, borderRadius: 2, boxShadow: 1 }}
+                  />
+                </ListItemAvatar>
+                <Box sx={{ flex: 1, minWidth: 0 }}>
+                  <Typography variant="subtitle1" fontWeight={700} noWrap>
+                    {item.name}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary" noWrap>
+                    {item.description}
+                  </Typography>
+                  <Typography variant="body2" color="primary" fontWeight={600} sx={{ mt: 0.5 }}>
+                    ${item.price.toFixed(2)} x {item.quantity} = ${(item.price * item.quantity).toFixed(2)}
+                  </Typography>
+                  {onQuantityChange && (
+                    <Box sx={{ display: 'flex', alignItems: 'center', mt: 1 }}>
+                      <IconButton
+                        size="small"
+                        aria-label="decrease quantity"
+                        onClick={() => onQuantityChange(item.id, Math.max(1, item.quantity - 1))}
+                        disabled={item.quantity <= 1}
+                        sx={{ border: '1px solid', borderColor: 'divider', bgcolor: 'background.paper', mr: 1 }}
+                      >
+                        <RemoveIcon fontSize="small" />
+                      </IconButton>
+                      <Typography variant="body2" sx={{ mx: 1, minWidth: 24, textAlign: 'center', fontWeight: 600 }}>
+                        {item.quantity}
+                      </Typography>
+                      <IconButton
+                        size="small"
+                        aria-label="increase quantity"
+                        onClick={() => onQuantityChange(item.id, item.quantity + 1)}
+                        sx={{ border: '1px solid', borderColor: 'divider', bgcolor: 'background.paper', ml: 1 }}
+                      >
+                        <AddIcon fontSize="small" />
+                      </IconButton>
+                    </Box>
+                  )}
+                </Box>
               </ListItem>
             ))}
           </List>
