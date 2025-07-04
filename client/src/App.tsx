@@ -12,6 +12,8 @@ import Cart from './Cart';
 import type { CartItem } from './Cart';
 import ProductDetail from './ProductDetail';
 import CheckoutModal from './CheckoutModal';
+import { ThemeProvider } from '@mui/material';
+import { darkTheme, lightTheme } from './ui/theme';
 
 const MOCK_PRODUCTS: Product[] = [
   {
@@ -104,6 +106,7 @@ function App() {
   const [cartOpen, setCartOpen] = useState(false);
   const [checkoutOpen, setCheckoutOpen] = useState(false);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [theme, setTheme] = useState<string>("");
 
   useEffect(() => {
     setCartItems(getCartFromStorage());
@@ -112,6 +115,7 @@ function App() {
   useEffect(() => {
     saveCartToStorage(cartItems);
   }, [cartItems]);
+  console.log(theme);
 
   const handleCartOpen = () => setCartOpen(true);
   const handleCartClose = () => setCartOpen(false);
@@ -151,10 +155,10 @@ function App() {
   };
 
   const cartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
-
+  ;
   return (
-    <>
-      <Navbar cartCount={cartCount} onCartClick={handleCartOpen} />
+    <ThemeProvider  theme={theme==='light'?lightTheme:darkTheme}>
+      <Navbar themeName={theme} setTheme={setTheme} cartCount={cartCount} onCartClick={handleCartOpen} />
       <Drawer
         anchor="right"
         open={cartOpen}
@@ -185,7 +189,7 @@ function App() {
         } />
         <Route path="/product/:id" element={<ProductDetail products={MOCK_PRODUCTS} onAddToCart={handleAddToCart} />} />
       </Routes>
-    </>
+    </ThemeProvider>
   )
 }
 

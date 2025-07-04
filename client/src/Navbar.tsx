@@ -18,8 +18,12 @@ import Box from '@mui/material/Box';
 import { Link as RouterLink } from 'react-router-dom';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+import Brightness7Icon from '@mui/icons-material/Brightness7';
 
 interface NavbarProps {
+    themeName: string;
+    setTheme: React.Dispatch<React.SetStateAction<string>>;
     cartCount: number;
     onCartClick: () => void;
 }
@@ -28,7 +32,7 @@ const navLinks = [
     { label: 'Home', icon: <HomeIcon />, to: '/' },
 ];
 
-const Navbar: React.FC<NavbarProps> = ({ cartCount, onCartClick }) => {
+const Navbar: React.FC<NavbarProps> = ({ themeName, setTheme, cartCount, onCartClick }) => {
     const [drawerOpen, setDrawerOpen] = useState(false);
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('md'));
@@ -97,6 +101,14 @@ const Navbar: React.FC<NavbarProps> = ({ cartCount, onCartClick }) => {
                         >
                             <HomeIcon />
                         </IconButton>
+                        <IconButton
+                            color="inherit"
+                            aria-label={themeName === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+                            onClick={() => setTheme(themeName === 'dark' ? 'light' : 'dark')}
+                            size="large"
+                        >
+                            {themeName === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
+                        </IconButton>
                         <Box sx={{ display: 'flex', gap: 1 }}>
                             <IconButton
                                 onClick={onCartClick}
@@ -113,16 +125,26 @@ const Navbar: React.FC<NavbarProps> = ({ cartCount, onCartClick }) => {
                 )}
                 {/* Mobile Hamburger Icon Only */}
                 {isMobile && (
-                    <IconButton
-                        edge="end"
-                        color="inherit"
-                        aria-label="open navigation menu"
-                        onClick={handleDrawerToggle}
-                        size="large"
-                        sx={{ ml: 1 }}
-                    >
-                        <MenuIcon />
-                    </IconButton>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                        <IconButton
+                            color="inherit"
+                            aria-label={themeName === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+                            onClick={() => setTheme(themeName === 'dark' ? 'light' : 'dark')}
+                            size="large"
+                        >
+                            {themeName === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
+                        </IconButton>
+                        <IconButton
+                            edge="end"
+                            color="inherit"
+                            aria-label="open navigation menu"
+                            onClick={handleDrawerToggle}
+                            size="large"
+                            sx={{ ml: 1 }}
+                        >
+                            <MenuIcon />
+                        </IconButton>
+                    </Box>
                 )}
                 <Drawer
                     anchor="right"
