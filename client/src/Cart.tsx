@@ -17,6 +17,8 @@ import {
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
+import AddIcon from '@mui/icons-material/Add';
+import RemoveIcon from '@mui/icons-material/Remove';
 
 export interface CartItem {
   id: number;
@@ -30,9 +32,10 @@ export interface CartItem {
 interface CartProps {
   cartItems: CartItem[];
   onRemove?: (id: number) => void;
+  onQuantityChange?: (id: number, newQty: number) => void;
 }
 
-const Cart: React.FC<CartProps> = ({ cartItems, onRemove }) => {
+const Cart: React.FC<CartProps> = ({ cartItems, onRemove, onQuantityChange }) => {
   const theme = useTheme();
   const total = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
   const totalCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
@@ -77,6 +80,28 @@ const Cart: React.FC<CartProps> = ({ cartItems, onRemove }) => {
                       <Typography variant="body2" color="text.secondary">
                         ${item.price.toFixed(2)} x {item.quantity} = ${(item.price * item.quantity).toFixed(2)}
                       </Typography>
+                      {onQuantityChange && (
+                        <Box sx={{ display: 'flex', alignItems: 'center', mt: 1 }}>
+                          <IconButton
+                            size="small"
+                            aria-label="decrease quantity"
+                            onClick={() => onQuantityChange(item.id, Math.max(1, item.quantity - 1))}
+                            disabled={item.quantity <= 1}
+                          >
+                            <RemoveIcon fontSize="small" />
+                          </IconButton>
+                          <Typography variant="body2" sx={{ mx: 1, minWidth: 24, textAlign: 'center' }}>
+                            {item.quantity}
+                          </Typography>
+                          <IconButton
+                            size="small"
+                            aria-label="increase quantity"
+                            onClick={() => onQuantityChange(item.id, item.quantity + 1)}
+                          >
+                            <AddIcon fontSize="small" />
+                          </IconButton>
+                        </Box>
+                      )}
                     </>
                   }
                 />

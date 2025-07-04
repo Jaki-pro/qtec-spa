@@ -1,5 +1,6 @@
 import React from 'react';
 import { Box, Card, CardMedia, CardContent, Typography, Button, Grid } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 export interface Product {
 	id: number;
@@ -15,6 +16,7 @@ interface ProductGridProps {
 }
 
 const ProductGrid: React.FC<ProductGridProps> = ({ products, onAddToCart }) => {
+		const navigate = useNavigate();
 	return (
 		<Box sx={{ width: '100%', mt: 4 }}>
 			<Grid
@@ -26,7 +28,21 @@ const ProductGrid: React.FC<ProductGridProps> = ({ products, onAddToCart }) => {
 			>
 				{products.map((product) => (
 					<Box key={product.id} sx={{ width: 200, display: 'flex' }}>
-						<Card sx={{ width: 200, display: 'flex', flexDirection: 'column', height: '100%' }}>
+						<Card
+							sx={{ width: 200, display: 'flex', flexDirection: 'column', height: '100%', cursor: 'pointer' }}
+							onClick={e => {
+								// Prevent click if Add to Cart button is clicked
+								if ((e.target as HTMLElement).closest('button')) return;
+								navigate(`/product/${product.id}`);
+							}}
+							tabIndex={0}
+							aria-label={`View details for ${product.name}`}
+							onKeyDown={e => {
+								if (e.key === 'Enter' || e.key === ' ') {
+									navigate(`/product/${product.id}`);
+								}
+							}}
+						>
 							<CardMedia
 								component="img"
 								height="140"
@@ -48,7 +64,10 @@ const ProductGrid: React.FC<ProductGridProps> = ({ products, onAddToCart }) => {
 									variant="contained"
 									color="primary"
 									fullWidth
-									onClick={() => onAddToCart(product)}
+									onClick={e => {
+										e.stopPropagation();
+										onAddToCart(product);
+									}}
 									aria-label={`Add ${product.name} to cart`}
 									sx={{ mt: 1, fontWeight: 600 }}
 								>

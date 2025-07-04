@@ -10,6 +10,7 @@ import ProductGrid from './ProductGrid';
 import type { Product } from './ProductGrid';
 import Cart from './Cart';
 import type { CartItem } from './Cart';
+import ProductDetail from './ProductDetail';
 
 const MOCK_PRODUCTS: Product[] = [
   {
@@ -130,6 +131,18 @@ function App() {
     setCartItems((prev) => prev.filter((item) => item.id !== id));
   };
 
+  const handleQuantityChange = (id: number, newQty: number) => {
+    setCartItems((prev) =>
+      prev.flatMap((item) => {
+        if (item.id === id) {
+          if (newQty < 1) return [];
+          return { ...item, quantity: newQty };
+        }
+        return item;
+      })
+    );
+  };
+
   const cartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
   return (
@@ -144,7 +157,7 @@ function App() {
         sx={{ zIndex: (theme) => theme.zIndex.appBar + 1 }}
       >
         <Box sx={{ width: { xs: 340, sm: 400 }, maxWidth: '100vw' }} role="presentation">
-          <Cart cartItems={cartItems} onRemove={handleRemoveFromCart} />
+          <Cart cartItems={cartItems} onRemove={handleRemoveFromCart} onQuantityChange={handleQuantityChange} />
         </Box>
       </Drawer>
       <Routes>
@@ -153,6 +166,7 @@ function App() {
             <ProductGrid products={MOCK_PRODUCTS} onAddToCart={handleAddToCart} />
           </>
         } />
+        <Route path="/product/:id" element={<ProductDetail products={MOCK_PRODUCTS} onAddToCart={handleAddToCart} />} />
       </Routes>
     </>
   )
