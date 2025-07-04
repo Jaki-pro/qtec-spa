@@ -29,9 +29,14 @@ server/    # Node.js backend
 - Node.js (v16 or above recommended)
 - npm (comes with Node.js)
 
-### 1. Install Dependencies
+### 1. Clone Repository 
+Open a terminal and run the command:
 
-Open a terminal in the project root and run:
+```
+git clone https://github.com/Jaki-pro/qtec-spa.git
+```
+
+### 2. Install Dependencies
 
 ```
 cd client
@@ -40,7 +45,7 @@ cd ../server
 npm install
 ```
 
-### 2. Start the Backend Server
+### 3. Start the Backend Server
 
 In a new terminal, go to the `server` directory and run:
 
@@ -50,7 +55,7 @@ npm run dev
 
 The backend will start on its configured port (default: 5000).
 
-### 3. Start the Frontend (React) App
+### 4. Start the Frontend (React) App
 
 In a new terminal, go to the `client` directory and run:
 
@@ -60,7 +65,7 @@ npm run dev
 
 The frontend will start on [http://localhost:5173](http://localhost:5173) (default Vite port).
 
-### 4. Open the App
+### 5. Open the App
 
 Visit [http://localhost:5173](http://localhost:5173) in your browser. The frontend will communicate with the backend server for product and cart operations.
 
