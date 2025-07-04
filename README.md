@@ -14,6 +14,9 @@ Qtec Ecommerce SPA is a modern, single-page application for an online store. It 
 - Node.js
 - Express.js
 
+### Database
+- Mongodb
+
 ## Project Structure
 ```
 client/    # React frontend
@@ -39,10 +42,10 @@ npm install
 
 ### 2. Start the Backend Server
 
-In the `server` directory, run:
+In a new terminal, go to the `server` directory and run:
 
 ```
-npm start
+npm run dev
 ```
 
 The backend will start on its configured port (default: 5000).
@@ -65,9 +68,4 @@ Visit [http://localhost:5173](http://localhost:5173) in your browser. The fronte
 
 ## Notes
 - Make sure both frontend and backend servers are running for full functionality.
-- You can customize ports and environment variables as needed.
-- For development, hot reloading is enabled via Vite.
-
----
-
-For any issues, please check the respective `README.md` files in `client` and `server` (if available) or contact the project maintainer.
+ 
