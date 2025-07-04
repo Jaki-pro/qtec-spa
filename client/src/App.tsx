@@ -11,6 +11,7 @@ import type { Product } from './ProductGrid';
 import Cart from './Cart';
 import type { CartItem } from './Cart';
 import ProductDetail from './ProductDetail';
+import CheckoutModal from './CheckoutModal';
 
 const MOCK_PRODUCTS: Product[] = [
   {
@@ -101,6 +102,7 @@ function saveCartToStorage(cart: CartItem[]) {
 
 function App() {
   const [cartOpen, setCartOpen] = useState(false);
+  const [checkoutOpen, setCheckoutOpen] = useState(false);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
   useEffect(() => {
@@ -143,6 +145,11 @@ function App() {
     );
   };
 
+  const handleCheckout = () => {
+    setCartItems([]);
+    localStorage.removeItem('cart');
+  };
+
   const cartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
   return (
@@ -157,9 +164,19 @@ function App() {
         sx={{ zIndex: (theme) => theme.zIndex.appBar + 1 }}
       >
         <Box sx={{ width: { xs: 340, sm: 400 }, maxWidth: '100vw' }} role="presentation">
-          <Cart cartItems={cartItems} onRemove={handleRemoveFromCart} onQuantityChange={handleQuantityChange} />
+          <Cart
+            cartItems={cartItems}
+            onRemove={handleRemoveFromCart}
+            onQuantityChange={handleQuantityChange}
+            onCheckoutClick={() => setCheckoutOpen(true)}
+          />
         </Box>
       </Drawer>
+      <CheckoutModal
+        open={checkoutOpen}
+        onClose={() => setCheckoutOpen(false)}
+        onCheckout={handleCheckout}
+      />
       <Routes>
         <Route path="/" element={
           <>

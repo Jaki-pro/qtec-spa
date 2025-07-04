@@ -33,9 +33,10 @@ interface CartProps {
   cartItems: CartItem[];
   onRemove?: (id: number) => void;
   onQuantityChange?: (id: number, newQty: number) => void;
+  onCheckoutClick?: () => void;
 }
 
-const Cart: React.FC<CartProps> = ({ cartItems, onRemove, onQuantityChange }) => {
+const Cart: React.FC<CartProps> = ({ cartItems, onRemove, onQuantityChange, onCheckoutClick }) => {
   const theme = useTheme();
   const total = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
   const totalCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
@@ -157,6 +158,7 @@ const Cart: React.FC<CartProps> = ({ cartItems, onRemove, onQuantityChange }) =>
           fullWidth
           sx={{ borderRadius: 2, py: 1.5, fontWeight: 600, fontSize: '1rem', boxShadow: 2, transition: 'all 0.2s', ':hover': { boxShadow: 4 } }}
           disabled={cartItems.length === 0}
+          onClick={onCheckoutClick}
         >
           Proceed to Checkout
         </Button>
